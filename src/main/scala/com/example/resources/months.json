@@ -1,0 +1,12 @@
+{ "month": "January", "flag": true }
+{ "month": "February", "flag": true }
+{ "month": "March", "flag": false }
+{ "month": "April", "flag": true }
+{ "month": "May", "flag": true }
+{ "month": "June", "flag": true }
+{ "month": "July", "flag": true }
+{ "month": "August", "flag": false }
+{ "month": "September", "flag": true }
+{ "month": "October", "flag": false }
+{ "month": "November", "flag": true }
+{ "month": "December", "flag": false }
