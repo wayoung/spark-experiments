@@ -45,7 +45,7 @@ object DataGenerator extends SparkEnv {
       .partitionBy("part")
       .option("compression", "snappy")
       .mode(SaveMode.Overwrite)
-      .parquet("src/main/scala/com/example/resources/ts_data")
+      .parquet("data/generated/ts_data")
   }
 
 }

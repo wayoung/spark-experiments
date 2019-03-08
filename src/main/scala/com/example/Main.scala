@@ -22,7 +22,7 @@ object Main extends SparkEnv {
   }
 
   def test2() = {
-    val df = spark.read.parquet("src/main/scala/com/example/resources/ts_data")
+    val df = spark.read.parquet("data/generated/ts_data")
     val q = df.select("timestamp").where($"part" > 50 && $"timestamp" > "2018-12-01 18:00:00")
     q.explain(true)
     df.printSchema()
