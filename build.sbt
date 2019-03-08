@@ -15,5 +15,6 @@ addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.apache.spark" %% "spark-mllib" % sparkVersion,
   "org.typelevel" %% "cats-core" % "1.6.0"
 )
