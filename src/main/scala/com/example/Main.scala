@@ -1,7 +1,12 @@
 package com.example
 
+import java.sql.Timestamp
+import java.sql.Timestamp._
+
+import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.types._
 
 object Main extends SparkEnv {
 
@@ -30,7 +35,26 @@ object Main extends SparkEnv {
     q.show
   }
 
-  def main(args: Array[String]) = {
-    test2()
+  def generateTimestampData(start: Long, n: Int): DataFrame = {
+    val rnd = scala.util.Random
+    val rdd = new RandomRDD(spark.sparkContext, n, spark.sparkContext.statusTracker.getExecutorInfos.length, Row(rnd.nextInt(3).toLong))
+    val schema = StructType(Seq(StructField("timestamp", LongType, false)))
+    @transient val upToCurrentWindow = Window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    @transient val orderedWindow = Window.orderBy("timestamp")
+    spark.createDataFrame(rdd, schema)
+      .withColumn("timestamp", from_unixtime(sum($"timestamp").over(upToCurrentWindow) + start))
+      .withColumn("eventID", concat(typedLit("event"), row_number().over(orderedWindow)))
+      .withColumn("part", floor(row_number().over(orderedWindow) / 100))
+  }
+
+  def main(args: Array[String]): Unit = {
+    val df = generateTimestampData(valueOf("2018-12-01 09:00:00").getTime / 1000L, 1000000)
+    df.repartition(27)
+      .write
+      .partitionBy("part")
+      .option("compression", "snappy")
+      .mode(SaveMode.Overwrite)
+      .format("parquet")
+      .save("data/generated/ts_data_1M")
   }
 }
