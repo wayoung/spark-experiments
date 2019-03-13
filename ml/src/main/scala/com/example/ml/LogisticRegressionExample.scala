@@ -1,6 +1,5 @@
-package com.example.ml
+package com.example
 
-import com.example.SparkEnv
 import org.apache.spark.ml.classification.LogisticRegression
 
 object LogisticRegressionExample extends SparkEnv {
