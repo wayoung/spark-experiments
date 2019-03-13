@@ -1,8 +1,6 @@
 package com.example
 
-import java.sql.Timestamp
-import java.sql.Timestamp._
-
+import com.example.random.RandomRDD
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.expressions.Window
@@ -48,7 +46,7 @@ object Main extends SparkEnv {
   }
 
   def main(args: Array[String]): Unit = {
-    val df = generateTimestampData(valueOf("2018-12-01 09:00:00").getTime / 1000L, 1000000)
+    val df = generateTimestampData(java.sql.Timestamp.valueOf("2018-12-01 09:00:00").getTime / 1000L, 1000000)
     df.repartition(27)
       .write
       .partitionBy("part")

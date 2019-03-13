@@ -1,6 +1,7 @@
-package com.example
+package com.example.random
 
 import org.apache.spark.Partition
+
 import scala.reflect.ClassTag
 
 

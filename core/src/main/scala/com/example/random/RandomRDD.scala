@@ -1,8 +1,9 @@
-package com.example
+package com.example.random
+
+import org.apache.spark.rdd.RDD
+import org.apache.spark.{Partition, SparkContext, TaskContext}
 
 import scala.reflect.ClassTag
-import org.apache.spark.{Partition, SparkContext, TaskContext}
-import org.apache.spark.rdd.RDD
 
 
 // The RDD will parallelize the workload across `numSlices`
