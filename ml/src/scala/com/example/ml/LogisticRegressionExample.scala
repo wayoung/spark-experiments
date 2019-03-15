@@ -1,10 +1,11 @@
-package com.example
+package com.example.ml
 
+import com.example.SparkEnv
 import org.apache.spark.ml.classification.LogisticRegression
 
 object LogisticRegressionExample extends SparkEnv {
 
-  def main(args: Array[String]): Unit = {
+  def test(): Unit = {
     // Load training data
     val training = spark.read.format("libsvm").load("data/mllib/sample_libsvm_data.txt")
 

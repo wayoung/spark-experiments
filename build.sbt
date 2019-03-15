@@ -26,6 +26,13 @@ lazy val ml = project
       )
     ).dependsOn(core)
 
+lazy val streaming = project
+    .settings(
+      name := "spark-experiments-streaming",
+      commonSettings,
+      libraryDependencies ++= commonDependencies
+    ).dependsOn(core)
+
 // ========
 // SETTINGS
 // ========
