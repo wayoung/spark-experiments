@@ -45,14 +45,21 @@ object Main extends SparkEnv {
       .withColumn("part", floor(row_number().over(orderedWindow) / 100))
   }
 
-  def main(args: Array[String]): Unit = {
-    val df = generateTimestampData(java.sql.Timestamp.valueOf("2018-12-01 09:00:00").getTime / 1000L, 1000000)
-    df.repartition(27)
+  def writeGeneratedData(): Unit = {
+    generateTimestampData(java.sql.Timestamp.valueOf("2018-12-01 09:00:00").getTime / 1000L, 1000000)
+      .repartition(27)
       .write
       .partitionBy("part")
       .option("compression", "snappy")
       .mode(SaveMode.Overwrite)
       .format("parquet")
       .save("data/generated/ts_data_1M")
+  }
+
+  def main(args: Array[String]): Unit = {
+    println("Hello")
+//    val df = spark.read.json("/home/wyoung/00a68c6d-0331-43ca-9a0a-7b7b29921bc0")
+//      .toDF()
+//    df.show
   }
 }
