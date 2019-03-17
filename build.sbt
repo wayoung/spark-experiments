@@ -33,6 +33,13 @@ lazy val streaming = project
       libraryDependencies ++= commonDependencies
     ).dependsOn(core)
 
+lazy val demo = project
+    .settings(
+      name := "spark-experiments-demo",
+      commonSettings,
+      libraryDependencies ++= commonDependencies
+    ).dependsOn(core)
+
 // ========
 // SETTINGS
 // ========
@@ -41,8 +48,8 @@ resolvers += Resolver.sonatypeRepo("releases")
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
 
 lazy val commonDependencies = Seq(
-  "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
-  "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-core" % sparkVersion,
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
   "org.typelevel" %% "cats-core" % "1.6.0"
 )
 

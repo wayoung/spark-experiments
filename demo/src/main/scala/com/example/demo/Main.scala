@@ -57,9 +57,8 @@ object Main extends SparkEnv {
   }
 
   def main(args: Array[String]): Unit = {
-    println("Hello")
-//    val df = spark.read.json("/home/wyoung/00a68c6d-0331-43ca-9a0a-7b7b29921bc0")
-//      .toDF()
-//    df.show
+        val df = spark.read.json("/home/wyoung/00a68c6d-0331-43ca-9a0a-7b7b29921bc0")
+          .toDF()
+        df.show
   }
 }
