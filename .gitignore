@@ -2,3 +2,5 @@
 generated/
 project/
 target/
+metastore_db/
+derby.log
