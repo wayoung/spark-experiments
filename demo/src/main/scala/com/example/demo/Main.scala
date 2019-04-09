@@ -58,10 +58,6 @@ object Main extends SparkEnv {
   }
 
   def main(args: Array[String]): Unit = {
-    val df = spark.read.json("/Users/wyoung/00a68c6d-0331-43ca-9a0a-7b7b29921bc0")
-      .toDF()
-    df.show
-    df.select($"co")
-    df.select(df.columns.flatMap(s => $"s.*"): _*).show
+    writeGeneratedData()
   }
 }
