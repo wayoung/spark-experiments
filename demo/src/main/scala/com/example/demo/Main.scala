@@ -57,11 +57,66 @@ object Main extends SparkEnv {
       .save("data/generated/ts_data_1M")
   }
 
+  def badReadPixelData(path: String): DataFrame = {
+    val pixelRow = raw"<(\d+)>(.+)\s(.+)\s(.+)\[(\d+)\]:\s+(\{.*\})".r
+    val payloadSchema = StructType(Seq(
+      StructField("ts", StringType, false),
+      StructField("ip", StringType, false),
+      StructField("ua", StringType, false),
+      StructField("ref", StringType, false),
+      StructField("dnt", StringType, false),
+      StructField("sid", StringType, false),
+      StructField("path", StringType, false),
+      StructField("status", StringType, false)
+    ))
+    val rowSchema = StructType(Seq(
+      StructField("n", IntegerType, false),
+      StructField("ts", StringType, false),
+      StructField("cache", StringType, false),
+      StructField("file", StringType, false),
+      StructField("num", IntegerType, false),
+      StructField("payload", StringType, false)
+    ))
+    val rowCountAccumulator = spark.sparkContext.longAccumulator("Row Count Accumulator")
+    val rdd = spark.sparkContext.textFile(path).map(l => {
+      rowCountAccumulator add 1L
+      l match {
+        case pixelRow(n, ts, cache, file, num, payload) => Row(n.toInt, ts, cache, file, num.toInt, payload)
+      }
+    })
+    ArrayType
+    spark
+      .createDataFrame(rdd, rowSchema)
+      .withColumn("payload", from_json($"payload", payloadSchema))
+      .select($"*", $"payload.*")
+      .drop($"payload")
+  }
+
+  def readPixelData(path: String): DataFrame = {
+    val payloadSchema = StructType(Seq(
+      StructField("ts", StringType, false),
+      StructField("ip", StringType, false),
+      StructField("ua", StringType, false),
+      StructField("ref", StringType, false),
+      StructField("dnt", StringType, false),
+      StructField("sid", StringType, false),
+      StructField("path", StringType, false),
+      StructField("status", StringType, false)
+    ))
+    val rowSchema = StructType(Seq(
+      StructField("payload", StringType, false)
+    ))
+    val rowCountAccumulator = spark.sparkContext.longAccumulator("Row Count Accumulator")
+    val rdd = spark.sparkContext.textFile(path).map(l => {
+      rowCountAccumulator add 1L
+      Row(l.substring(l.indexOf("{") - 1))
+    })
+    spark
+      .createDataFrame(rdd, rowSchema)
+      .withColumn("payload", from_json($"payload", payloadSchema))
+  }
+
   def main(args: Array[String]): Unit = {
-    val df = spark.read.json("/Users/wyoung/00a68c6d-0331-43ca-9a0a-7b7b29921bc0")
-      .toDF()
-    df.show
-    df.select($"co")
-    df.select(df.columns.flatMap(s => $"s.*"): _*).show
+    writeGeneratedData()
   }
 }
