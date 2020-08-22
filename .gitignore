@@ -1,6 +1,6 @@
 .idea/
 generated/
-project/project
+project/project/target
 project/target
 target/
 metastore_db/
