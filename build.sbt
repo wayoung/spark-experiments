@@ -4,7 +4,7 @@ ThisBuild / version := "0.1"
 
 ThisBuild / scalaVersion := "2.12.8"
 
-val sparkVersion = "2.4.1"
+val sparkVersion = "3.0.0"
 
 // ========
 // PROJECTS
