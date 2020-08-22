@@ -1,6 +1,7 @@
 .idea/
 generated/
-project/
+project/project
+project/target
 target/
 metastore_db/
 derby.log
