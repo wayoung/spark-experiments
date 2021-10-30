@@ -52,28 +52,16 @@ lazy val commonDependencies = Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided"
 )
 
+val meta = """META.INF(.)*""".r
 lazy val commonSettings = Seq(
   scalacOptions += "-Ywarn-unused:imports",
-  fullClasspath in Runtime := (fullClasspath in (Compile, run)).value,
-  assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
-  assemblyMergeStrategy in assembly := {
-    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-    case PathList("javax", xs @ _*) => MergeStrategy.last
-    case PathList("com", "google", xs @ _*) => MergeStrategy.last
-    case PathList("com", "esotericsoftware", xs @ _*) => MergeStrategy.last
-    case PathList("com", "codahale", xs @ _*) => MergeStrategy.last
-    case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
-    case PathList("com", "fasterxml", xs @ _*) => MergeStrategy.last
-    case PathList("dev", "ludovic", xs @ _*) => MergeStrategy.last
-    case PathList("io", "netty", xs @ _*) => MergeStrategy.last
-    case PathList("org", "apache", xs @ _*) => MergeStrategy.last
-    case PathList("org","aopalliance", xs @ _*) => MergeStrategy.last
-    case "module-info.class" => MergeStrategy.last
-    case "plugin.properties" => MergeStrategy.last
-    case "log4j.properties" => MergeStrategy.last
-    case "git.properties" => MergeStrategy.last
-    case x =>
-      val oldStrategy = (assemblyMergeStrategy in assembly).value
-      oldStrategy(x)
+  assembly / assemblyMergeStrategy := {
+    case PathList("javax", "servlet", xs @ _*) => MergeStrategy.first
+    case PathList(ps @ _*) if ps.last endsWith ".html" => MergeStrategy.first
+    case n if n.contains("services") => MergeStrategy.concat
+    case n if n.startsWith("reference.conf") => MergeStrategy.concat
+    case n if n.endsWith(".conf") => MergeStrategy.concat
+    case meta(_) => MergeStrategy.discard
+    case _ => MergeStrategy.first
   }
 )
