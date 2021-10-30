@@ -2,7 +2,7 @@ import sbt.Keys.resolvers
 
 ThisBuild / version := "0.1"
 
-ThisBuild / scalaVersion := "2.13.6"
+ThisBuild / scalaVersion := "2.12.15"
 
 val sparkVersion = "3.2.0"
 
