@@ -12,7 +12,6 @@ object Main extends SparkEnv {
     spark
       .read
       .parquet(inputPath)
-      .withColumn("age", $"age" + 1)
       .write
       .parquet(outputPath)
   }

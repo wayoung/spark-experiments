@@ -1,13 +1,13 @@
 package com.example.demo
 
-import com.example.SparkEnv
+import com.example.LocalSparkEnv
 import com.example.random.RandomRDD
 import org.apache.spark.sql.{DataFrame, Row, SaveMode}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.types._
 
-object RandomSpark extends SparkEnv {
+object RandomLocalSpark extends LocalSparkEnv {
 
   import spark.implicits._
 

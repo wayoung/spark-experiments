@@ -1,9 +1,9 @@
 package com.example.ml
 
-import com.example.SparkEnv
+import com.example.LocalSparkEnv
 import org.apache.spark.ml.classification.LogisticRegression
 
-object LogisticRegressionExample extends SparkEnv {
+object LogisticRegressionExample extends LocalSparkEnv {
 
   def test(): Unit = {
     // Load training data
